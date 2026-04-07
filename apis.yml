@@ -10,9 +10,9 @@ created: '2024-12-03'
 modified: '2026-03-16'
 position: Consumer
 tags:
+  - Education
   - Federal Government
   - Financial Aid
-  - Education
   - Loans
 url: >-
   https://raw.githubusercontent.com/api-evangelist/federal-student-aid/refs/heads/main/apis.yml
@@ -20,8 +20,7 @@ specificationVersion: '0.19'
 apis:
   - aid: federal-student-aid:federal-student-aid
     name: Federal Student Aid
-    tags:
-      - API
+    tags: []
     humanURL: https://studentaid.gov
     properties:
       - url: https://studentaid.gov
