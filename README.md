@@ -1,45 +1,46 @@
 # Federal Student Aid (federal-student-aid)
-The federal student aid program provides grants, loans, and work-study funds from the government to eligible students enrolled in college or career school. Read more about the financial aid process.
 
-**URL:** [Visit APIs.json URL](
-https://raw.githubusercontent.com/api-evangelist/federal-student-aid/refs/heads/main/apis.yml)
+The Federal Student Aid (FSA) office of the U.S. Department of Education provides grants, loans, and work-study funds to eligible students enrolled in college or career school. FSA operates StudentAid.gov as the consumer portal for managing federal student loans, completing the FAFSA, and exploring repayment options. FSA does not currently publish a public, open developer API program; aggregate higher education and aid data is redistributed through the Department of Education's open data programs such as the College Scorecard API.
+
+**URL:** [Visit APIs.json URL](https://raw.githubusercontent.com/api-evangelist/federal-student-aid/refs/heads/main/apis.yml)
 
 ## Scope
 
-- **Type:** Contract 
-- **Position:** Consuming 
-- **Access:** 3rd-Party 
+- **Type:** Index
+- **Position:** Consumer
+- **Access:** 3rd-Party
 
-## Tags:
+## Tags
 
- - Federal Government, Financial Aid, Education, Loans
+- Education, Federal Government, Financial Aid, Grants, Loans, Student Aid
 
 ## Timestamps
 
-- **Created:** 2024-12-03 
-- **Modified:** 2024-12-30 
+- **Created:** 2024-12-03
+- **Modified:** 2026-04-28
 
 ## APIs
 
-### Federal Student Aid
+### StudentAid.gov
+The official consumer platform for U.S. federal student aid: FAFSA, loan management, and repayment tooling. Not exposed as a public REST API.
+- [Website](https://studentaid.gov)
+- [FAFSA](https://studentaid.gov/h/apply-for-aid/fafsa)
+- [Loan Repayment](https://studentaid.gov/manage-loans/repayment)
 
-Federal Student Aid offers a platform to manage federal student loans and
-access various repayment options.
+### College Scorecard API
+Department of Education API exposing institution-level data including federal aid participation, costs, completion rates, and outcomes.
+- [Documentation](https://collegescorecard.ed.gov/data/documentation/)
+- Base URL: `https://api.data.gov/ed/collegescorecard/v1`
+- [Sign Up](https://api.data.gov/signup/)
 
-**Human URL:** [https://studentaid.gov](https://studentaid.gov)
+## Common Properties
 
-
-#### Tags:
-
- - API
-
-#### Properties
-
-- [Documentation](https://studentaid.gov)
+- [Website](https://studentaid.gov)
+- [About](https://studentaid.gov/about)
+- [FAFSA](https://studentaid.gov/h/apply-for-aid/fafsa)
+- [Department of Education Open Data](https://www.ed.gov/about/news/data)
 
 ## Maintainers
 
-**FN:** Kin Lane
-
-**Email:** info@apievangelist.com
-
+- **FN:** Kin Lane
+- **Email:** kin@apievangelist.com
