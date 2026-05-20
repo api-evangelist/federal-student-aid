@@ -64,6 +64,8 @@ apis:
       - type: SignUp
         url: https://api.data.gov/signup/
 common:
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/federalstudentaid
   - type: Website
     url: https://studentaid.gov
   - type: About
