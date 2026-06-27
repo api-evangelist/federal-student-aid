@@ -61,7 +61,7 @@ apis:
     properties:
       - type: Documentation
         url: https://collegescorecard.ed.gov/data/documentation/
-      - type: SignUp
+      - type: Signup
         url: https://api.data.gov/signup/
 common:
   - type: LinkedIn
