@@ -36,7 +36,7 @@ tags:
   - Student Aid
 url: >-
   https://raw.githubusercontent.com/api-evangelist/federal-student-aid/refs/heads/main/apis.yml
-specificationVersion: '0.19'
+specificationVersion: '0.23'
 apis:
   - aid: federal-student-aid:studentaid-gov
     name: StudentAid.gov
