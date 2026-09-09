@@ -1,0 +1,63 @@
+specification: API Commons MCPServer
+specificationVersion: '0.1'
+provider: Federal Student Aid
+providerId: federal-student-aid
+generated: '2026-09-09'
+method: searched
+source: >-
+  npm registry search, provider documentation review, and direct probes of
+  studentaid.gov, api.data.gov and collegescorecard.ed.gov, 2026-09-09
+modified: '2026-09-09'
+description: >-
+  Record of the Model Context Protocol search for Federal Student Aid. No
+  first-party MCP server exists for any surface on this record. One third-party
+  server exists on npm and is noted below without being credited to the provider.
+  No candidate tool list was derived, because there is no OpenAPI to derive one
+  from and inventing tool definitions for a government API would be fabrication.
+status: none
+official_server: false
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: none
+  verified: searched
+search_record:
+  - target: first-party hosted MCP endpoint
+    method: probed
+    result: not found
+    note: >-
+      No MCP endpoint is documented on studentaid.gov, collegescorecard.ed.gov,
+      api.data.gov or fsapartners.ed.gov, and no /.well-known/ document on any of
+      those hosts advertises one (54 probes, all misses — see
+      well-known/federal-student-aid-well-known.yml). No endpoint URL was guessed.
+  - target: npm / PyPI first-party MCP package
+    method: searched
+    result: not found
+    note: >-
+      No package published by the Department of Education or Federal Student Aid on
+      any registry.
+  - target: third-party MCP servers
+    method: searched
+    result: found
+    third_party:
+      - name: '@pipeworx/mcp-college-scorecard'
+        url: https://www.npmjs.com/package/@pipeworx/mcp-college-scorecard
+        version: 0.1.0
+        published: '2026-06-26'
+        vendor: pipeworx-io
+        official: false
+        note: >-
+          Wraps the public College Scorecard API. Community work, not a provider
+          surface. Deliberately not wired as an MCPServer pointer in apis.yml.
+derived_tools: []
+derived_tools_note: >-
+  The pipeline derives candidate MCP tools from OpenAPI operations. This provider
+  publishes no OpenAPI, so there are no operationIds to bind tools to and no
+  candidate list was written.
+agent_reachability: >-
+  An agent can call the College Scorecard API directly today with a free key — it is
+  a single GET endpoint with a documented query grammar — but there is no MCP
+  packaging of it from the Department, so the agent must be told the grammar rather
+  than discovering it.

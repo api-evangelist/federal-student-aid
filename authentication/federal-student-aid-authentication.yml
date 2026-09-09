@@ -1,0 +1,103 @@
+specification: API Commons Authentication
+specificationVersion: '0.1'
+provider: Federal Student Aid
+providerId: federal-student-aid
+generated: '2026-09-09'
+method: searched
+source: https://api.data.gov/docs/developer-manual/
+docs: https://collegescorecard.ed.gov/data/api-documentation/
+modified: '2026-09-09'
+description: >-
+  Authentication profile for the one publicly callable API surface on this record,
+  the College Scorecard API. It is fronted by api.data.gov, the shared federal API
+  gateway, so the authentication model is the gateway's: a single API key, no OAuth,
+  no scopes, no user identity. Federal Student Aid's own partner systems
+  (FSA Partner Connect, COD, NSLDS, SAIG) authenticate through enrolled-organization
+  credentials that are not documented publicly and are out of scope here.
+schemes:
+  - id: api_key_query
+    type: apiKey
+    in: query
+    name: api_key
+    applies_to: College Scorecard API
+    required: true
+    description: >-
+      "To use the College Scorecard API you must have an API key... it is required
+      for all API requests." Appended as ?api_key=YOUR_API_KEY.
+    evidence: https://collegescorecard.ed.gov/data/api-documentation/
+  - id: api_key_header
+    type: apiKey
+    in: header
+    name: X-Api-Key
+    applies_to: College Scorecard API
+    required: false
+    description: >-
+      api.data.gov accepts the same key in an HTTP header instead of the query
+      string. Preferred over the query parameter because the key does not then
+      appear in access logs, referrers or browser history.
+    evidence: https://api.data.gov/docs/developer-manual/
+  - id: api_key_basic
+    type: http
+    scheme: basic
+    applies_to: College Scorecard API
+    required: false
+    description: >-
+      api.data.gov also accepts the API key as the HTTP Basic Auth username with an
+      empty password.
+    evidence: https://api.data.gov/docs/developer-manual/
+oauth2: false
+openid_connect: false
+mutual_tls: false
+scopes: none
+scopes_note: >-
+  No OAuth surface exists, so there is no scope model and no scopes/ artifact.
+  A key is either valid or it is not; there is no per-resource authorization.
+key_issuance:
+  self_service: true
+  signup_url: https://api.data.gov/signup/
+  delivery: emailed
+  approval: automatic
+  cost: free
+  note: >-
+    Registration is a form plus a security challenge; the key is emailed. No
+    contract, no billing relationship, no sales gate.
+test_credentials:
+  demo_key: DEMO_KEY
+  demo_key_note: >-
+    api.data.gov publishes a shared DEMO_KEY for exploration, rate limited to
+    30 requests per IP per hour and 50 per IP per day. Verified live 2026-09-09
+    against /ed/collegescorecard/v1/schools (HTTP 200).
+  evidence: https://api.data.gov/docs/developer-manual/
+transport:
+  https_required: true
+  https_error: HTTPS_REQUIRED (HTTP 400)
+  evidence: https://api.data.gov/docs/developer-manual/
+failure_modes:
+  - code: API_KEY_MISSING
+    http_status: 403
+    observed: true
+    observed_note: >-
+      Probed 2026-09-09 — GET https://api.data.gov/ed/collegescorecard/v1/schools
+      with no key returned 403 with body {"error":{"code":"API_KEY_MISSING", ...}}.
+  - code: API_KEY_INVALID
+    http_status: 403
+    observed: false
+  - code: API_KEY_DISABLED
+    http_status: 403
+    observed: false
+  - code: API_KEY_UNAUTHORIZED
+    http_status: 403
+    observed: false
+  - code: API_KEY_UNVERIFIED
+    http_status: 403
+    observed: false
+gated_surfaces:
+  - name: FSA Partner Connect / SAIG
+    url: https://fsapartners.ed.gov/help-center/access-to-fsa-systems
+    model: enrolled-organization credentials
+    public_contract: false
+    note: >-
+      Schools, servicers and vendors exchange data with FSA through the Student Aid
+      Internet Gateway using enrollment-issued credentials and batch software
+      (EDconnect / TDClient). No public authentication documentation, no public
+      contract.

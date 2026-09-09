@@ -1,0 +1,114 @@
+specification: API Commons ChangeLog
+specificationVersion: '0.1'
+provider: Federal Student Aid
+providerId: federal-student-aid
+generated: '2026-09-09'
+method: searched
+source: https://collegescorecard.ed.gov/data/changelog/
+modified: '2026-09-09'
+description: >-
+  Dated change log for the College Scorecard API and data platform, the one
+  machine-callable API surface carried on this Federal Student Aid record. The
+  U.S. Department of Education publishes a public Change Log page for College
+  Scorecard, and the site codebase (RTI International, ED's contractor) publishes
+  matching tagged releases on GitHub. Federal Student Aid's own systems
+  (StudentAid.gov, FSA Partner Connect, COD, NSLDS) publish no public change log
+  for any API surface.
+scope:
+  api: College Scorecard API
+  aid: federal-student-aid:college-scorecard
+  note: >-
+    Entries describe both data refreshes and website/API behaviour changes; the
+    Department does not separate an API-only change log from the data change log.
+sources:
+  - type: ChangeLog
+    url: https://collegescorecard.ed.gov/data/changelog/
+    status: 200
+    note: Human-readable dated change log published by the Department of Education.
+  - type: Releases
+    url: https://github.com/RTICWDT/college-scorecard/releases
+    status: 200
+    note: >-
+      Tagged, dated releases for the College Scorecard site/API codebase, linked
+      from the College Scorecard footer. Version labels (3.x.y) match the version
+      string printed in the site footer.
+versioning:
+  api_version_scheme: path
+  current_api_version: v1
+  current_platform_version: 3.6.1
+  platform_version_evidence: >-
+    Footer string "College Scorecard Data 3.6.1" on
+    https://collegescorecard.ed.gov/data/api-documentation/ (fetched 2026-09-09).
+  breaking_change_policy: none-published
+  breaking_change_note: >-
+    The Department publishes no deprecation or breaking-change policy for the
+    College Scorecard API. Data variables are added, revised and re-derived
+    between releases; the v1 path has not changed since the API launched.
+entries:
+  - date: '2026-06-10'
+    version: null
+    breaking: false
+    additions: false
+    highlights: >-
+      Metrics derived from IPEDS refreshed with more recent data values; earnings
+      threshold calculations revised to exclude unemployed individuals.
+  - date: '2026-03-23'
+    version: null
+    breaking: false
+    additions: true
+    highlights: >-
+      New earnings metrics added, including field-of-study earnings measures and
+      comparisons to high school graduate earnings; IRS earnings source data updated.
+  - date: '2025-11-17'
+    version: '3.5.3'
+    breaking: false
+    additions: false
+    highlights: >-
+      Minority-serving institution indicators refreshed from Office of Postsecondary
+      Education and Federal Student Aid sources (predominantly Black institutions,
+      tribal colleges and other designated institution types).
+  - date: '2025-05-21'
+    version: null
+    breaking: false
+    additions: false
+    highlights: >-
+      Correction to a truncation defect in the SCORECARD_SECTOR metric.
+  - date: '2025-04-23'
+    version: '3.5.1'
+    breaking: false
+    additions: true
+    highlights: >-
+      New SCORECARD_SECTOR metric introduced for institutional classification;
+      IPEDS and Federal Student Aid source data updated.
+  - date: '2025-01-16'
+    version: '3.5.0'
+    breaking: false
+    additions: false
+    highlights: >-
+      API bug fix — integer values were returning 0 instead of null for suppressed
+      or unavailable data. Federal Student Aid derived metrics updated. This is the
+      most recent entry that changes API response semantics rather than data values.
+  - date: '2024-12-09'
+    version: '3.4.0'
+    breaking: false
+    additions: false
+    highlights: >-
+      Upgrade to the website's core framework for performance and maintainability;
+      no underlying data change.
+  - date: '2024-10-10'
+    version: '3.2.5'
+    breaking: false
+    additions: false
+    highlights: >-
+      Federal Student Aid source metrics updated and minority-serving institution
+      data refreshed from the Office of Postsecondary Education.
+  - date: '2024-07-01'
+    version: '3.2.2'
+    breaking: false
+    additions: true
+    highlights: >-
+      The API Documentation page was added, giving detailed parameter examples for
+      querying the College Scorecard API. This is the origin of the reference page
+      this record points at.
+entry_count: 9
+window: 2024-07-01..2026-06-10

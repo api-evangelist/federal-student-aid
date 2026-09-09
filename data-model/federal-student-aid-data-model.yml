@@ -1,0 +1,228 @@
+specification: API Commons DataModel
+specificationVersion: '0.1'
+provider: Federal Student Aid
+providerId: federal-student-aid
+generated: '2026-09-09'
+method: probed
+source: >-
+  Live introspection of https://api.data.gov/ed/collegescorecard/v1/schools with
+  keys_nested=true, 2026-09-09, cross-read against
+  https://collegescorecard.ed.gov/data/api-documentation/
+modified: '2026-09-09'
+description: >-
+  Entity model for the College Scorecard API. There is no OpenAPI to derive this
+  from, so it was read off the live API by requesting whole object wildcards with
+  keys_nested=true and walking the returned structure. Every entity and field group
+  below was observed in a real response for IPEDS UNITID 166027; nothing here is
+  inferred from prose.
+derivation:
+  from: live-response
+  no_openapi: true
+  probe: >-
+    GET /ed/collegescorecard/v1/schools?id=166027&fields=id,school,location,latest&keys_nested=true
+  probed_at: '2026-09-09'
+shape:
+  root: institution record
+  envelope: '{"metadata": {...}, "results": [ <institution> ]}'
+  nesting_note: >-
+    A record has three stable top-level members — id, school, location — plus one
+    member per data vintage. The vintage members are the four-digit year (2018, 2019
+    …) and the alias `latest`; each has the same internal shape. This is the model's
+    defining feature: time is a level of the object tree, not a query parameter.
+identifiers:
+  primary: id
+  primary_standard: IPEDS UNITID
+  secondary:
+    - field: ope6_id
+      standard: OPE ID (6-digit)
+      issuer: Federal Student Aid
+    - field: ope8_id
+      standard: OPE ID (8-digit)
+      issuer: Federal Student Aid
+    - field: latest.programs.cip_4_digit[].code
+      standard: CIP 4-digit
+      issuer: NCES
+  see: conformance/federal-student-aid-conformance.yml
+entities:
+  - name: institution
+    path: results[]
+    description: One postsecondary institution, keyed on IPEDS UNITID.
+    fields: [id, ope6_id, ope8_id]
+  - name: school
+    path: school
+    description: >-
+      Time-invariant institutional profile — identity, control, classification and
+      regulatory flags.
+    notable_fields:
+      - name
+      - alias
+      - city
+      - state
+      - state_fips
+      - zip
+      - address
+      - school_url
+      - price_calculator_url
+      - accreditor
+      - accreditor_code
+      - carnegie_basic
+      - carnegie_size_setting
+      - carnegie_undergrad
+      - ownership
+      - ownership_peps
+      - sector
+      - degrees_awarded
+      - institutional_characteristics
+      - minority_serving
+      - religious_affiliation
+      - men_only
+      - women_only
+      - online_only
+      - main_campus
+      - branches
+      - title_iv
+      - under_investigation
+      - operating
+      - endowment
+      - faculty_salary
+      - ft_faculty_rate
+      - instructional_expenditure_per_fte
+      - tuition_revenue_per_fte
+    fsa_relevance: >-
+      school.title_iv and school.under_investigation are Federal Student Aid
+      program-eligibility signals, and school.ownership_peps comes from PEPS, FSA's
+      Postsecondary Education Participants System.
+  - name: location
+    path: location
+    description: Geo point used by the zip/distance search.
+    fields: [lat, lon]
+  - name: vintage
+    path: latest | <year>
+    description: >-
+      A dated snapshot of the ten measurement categories below. `latest` is an alias
+      that resolves per metric, not per record.
+    children: [academics, admissions, aid, completion, cost, earnings, programs, repayment, school, student]
+  - name: aid
+    path: latest.aid
+    description: >-
+      Federal aid participation and borrowing outcomes — the category most directly
+      owned by Federal Student Aid.
+    notable_fields:
+      - federal_loan_rate
+      - ftft_federal_loan_rate
+      - ftft_pell_grant_rate
+      - dcs_pell_grant_rate
+      - dcs_federal_loan_rate
+      - cumulative_debt
+  - name: repayment
+    path: latest.repayment
+    description: >-
+      Loan repayment progress cohorts at 1/2/3/5/7/10/20 years, split by
+      first-time/not-first-time and dependency, sourced from FSA loan servicing data.
+    key_shape: >-
+      <window>_yr_<bb|db>_<fed|pp>_repayment, each with count/default/deferment/
+      discharge/fullypaid/delinquent/noprogress/forbearance/makingprogress members,
+      plus *_suppressed twins where privacy suppression applies.
+  - name: student
+    path: latest.student
+    description: Enrollment, demographics and applicant-side aid measures.
+    notable_fields: [FAFSA_applications, fafsa_sent, enrollment, demographics, family_income, avg_dependent_income, avg_independent_income, grad_students]
+    fsa_relevance: >-
+      student.FAFSA_applications and student.fafsa_sent are FAFSA volume measures —
+      the same programme FSA operates on StudentAid.gov.
+  - name: cost
+    path: latest.cost
+    description: Price of attendance, net price by income band, tuition, books, room and board.
+    notable_fields: [attendance, avg_net_price, net_price, tuition, booksupply, roomboard, otherexpense, title_iv]
+  - name: completion
+    path: latest.completion
+    description: Completion rates at 2/3/4/6/8 years, disaggregated by cohort and race/ethnicity.
+  - name: earnings
+    path: latest.earnings
+    description: >-
+      Post-enrolment earnings from IRS data at 6-11 years after entry and 1-5 years
+      after completion, plus hsearn (high school graduate comparison) and consumer-facing measures.
+  - name: admissions
+    path: latest.admissions
+    description: Admission rate and test scores.
+    notable_fields: [admission_rate, admission_rate_suppressed, sat_scores, act_scores, test_requirements]
+  - name: academics
+    path: latest.academics
+    description: Program offerings by CIP 2-digit category and reporting flags.
+    notable_fields: [cip_2_digit, program, program_available, program_percentage, program_reporter]
+  - name: programs
+    path: latest.programs.cip_4_digit[]
+    description: >-
+      Field-of-study records — the second dataset. An ARRAY nested inside the
+      institution record, one element per CIP 4-digit program and credential level.
+    element_fields: [code, title, unit_id, ope6_id, distance, school, credential, counts, repayment, earnings, debt]
+relationships:
+  - from: institution
+    to: school
+    type: has_one
+    via: school
+  - from: institution
+    to: location
+    type: has_one
+    via: location
+  - from: institution
+    to: vintage
+    type: has_many
+    via: year-keyed members plus the `latest` alias
+  - from: vintage
+    to: aid
+    type: has_one
+  - from: vintage
+    to: repayment
+    type: has_one
+  - from: vintage
+    to: student
+    type: has_one
+  - from: vintage
+    to: cost
+    type: has_one
+  - from: vintage
+    to: completion
+    type: has_one
+  - from: vintage
+    to: earnings
+    type: has_one
+  - from: vintage
+    to: admissions
+    type: has_one
+  - from: vintage
+    to: academics
+    type: has_one
+  - from: vintage
+    to: programs
+    type: has_many
+    via: latest.programs.cip_4_digit[]
+  - from: programs
+    to: institution
+    type: belongs_to
+    via: unit_id (IPEDS UNITID) and ope6_id
+  - from: institution
+    to: external IPEDS dataset
+    type: joins_on
+    via: id (IPEDS UNITID)
+  - from: institution
+    to: FSA Title IV program data
+    type: joins_on
+    via: ope6_id / ope8_id
+traps:
+  - >-
+    Suppressed values are null, not zero — and were returning 0 rather than null
+    until the January 2025 fix. Any consumer averaging these fields on data captured
+    before that release is averaging in false zeros.
+  - >-
+    Two members of the same `latest` object may come from different reference years.
+    Cross-category comparisons need the Data Dictionary cohort map to be correct.
+  - >-
+    Field-of-study records are filtered by default: a query with a filter returns
+    only matching array elements unless all_programs_nested=true is passed, so a
+    naive read undercounts an institution's programs.
+references:
+  data_dictionary: https://collegescorecard.ed.gov/files/CollegeScorecardDataDictionary.xlsx
+  institution_documentation: https://collegescorecard.ed.gov/files/InstitutionDataDocumentation.pdf
+  field_of_study_documentation: https://collegescorecard.ed.gov/files/FieldOfStudyDataDocumentation.pdf
+  glossary: https://collegescorecard.ed.gov/data/glossary/

@@ -1,0 +1,166 @@
+specification: API Commons Conventions
+specificationVersion: '0.1'
+provider: Federal Student Aid
+providerId: federal-student-aid
+generated: '2026-09-09'
+method: searched
+source: https://collegescorecard.ed.gov/data/api-documentation/
+modified: '2026-09-09'
+description: >-
+  Cross-cutting runtime semantics for the College Scorecard API — the single
+  callable surface on this Federal Student Aid record. It is a read-only,
+  key-authenticated JSON query API fronted by the api.data.gov gateway, with a rich
+  documented filter/operator grammar and no write surface at all.
+scope:
+  api: College Scorecard API
+  aid: federal-student-aid:college-scorecard
+  base_url: https://api.data.gov/ed/collegescorecard/v1/schools
+  surface_shape: single-endpoint query API
+  surface_note: >-
+    There are no resource paths beyond /schools. Everything — selection, filtering,
+    projection, sorting, geo search — is expressed in query parameters against one
+    endpoint. There is no OpenAPI describing it; the grammar below is transcribed
+    from the Department's own API Documentation page.
+auth:
+  style: api-key
+  transports: [query api_key, header X-Api-Key, HTTP Basic username]
+  see: authentication/federal-student-aid-authentication.yml
+http:
+  methods: [GET]
+  write_surface: false
+  https_only: true
+  media_type: application/json
+  formats: [json, csv]
+  formats_note: >-
+    The underlying Open Data Maker engine also supports CSV output; JSON is the
+    documented default for the api.data.gov deployment.
+pagination:
+  style: page-number
+  params:
+    page: zero-indexed page number, default 0
+    per_page: page size, default 20, maximum 100
+  response_fields:
+    total: metadata.total
+    page: metadata.page
+    per_page: metadata.per_page
+  cursor: false
+  note: >-
+    Total result count is always returned in metadata.total, so a client can size a
+    full crawl before starting it.
+sorting:
+  param: sort
+  syntax: "sort=<field>[:asc|:desc]"
+  default_direction: asc
+  restriction: >-
+    Only fields flagged in the "index" column of the Data Dictionary tabs are
+    sortable. Sorting on an unindexed field is not supported.
+field_selection:
+  param: fields
+  syntax: comma-separated list of dotted field paths
+  wildcards: true
+  wildcard_note: >-
+    A parent object may be named to return all nested children, e.g.
+    fields=id,school,latest.
+  response_shape_toggle:
+    param: keys_nested
+    values: [true]
+    note: >-
+      By default the response returns flat dotted-string keys. keys_nested=true
+      returns real nested JSON objects instead. An agent parsing responses must
+      pin this, because the two shapes are not interchangeable.
+filtering:
+  equality: "<field>=<value>"
+  value_lists:
+    syntax: "<field>=v1,v2,v3"
+    semantics: exact match against any supplied value
+    limitation: >-
+      Value lists do not support wildcards or floating-point numbers.
+  operators:
+    - name: __not
+      syntax: "<field>__not=<value>"
+      semantics: negative / inverted match
+    - name: __range
+      syntax: "<field>__range=<low>..<high>"
+      semantics: inclusive numeric range; either side may be omitted for an open range
+      note: integer and floating-point ranges both supported; low must be less than high
+  geo:
+    params: [zip, distance]
+    syntax: "zip=12345&distance=10mi"
+    units: [mi, km]
+    default_unit: mi
+    origin: centre of the given ZIP code, not its boundary
+    coverage: U.S. ZIP codes only
+  nested_arrays:
+    param: all_programs_nested
+    values: [true]
+    semantics: >-
+      Field-of-study data is a nested array. By default only array elements matching
+      the query are returned; all_programs_nested=true returns every element.
+temporal_addressing:
+  scheme: year-prefixed field paths
+  latest_alias: latest
+  syntax: "<year>.<category>.<field> or latest.<category>.<field>"
+  example: "2018.earnings.* versus latest.earnings.*"
+  caveat: >-
+    "latest" is per-metric, not per-record — because metrics are published at
+    different times of year, two fields under latest can come from different
+    reference years. Any client comparing metrics across categories must read the
+    cohort map in the Data Dictionary rather than assuming a common vintage. This is
+    the single most consequential semantic in this API and it is easy to get wrong.
+error_envelope:
+  shape: '{"error": {"code": ..., "message": ...}}'
+  rfc9457: false
+  content_type: application/json
+  note: >-
+    Two different producers fill the same envelope: the api.data.gov gateway returns
+    string codes (API_KEY_MISSING, OVER_RATE_LIMIT), while the College Scorecard
+    application returns numeric HTTP-status codes. See
+    errors/federal-student-aid-problem-types.yml.
+  see: errors/federal-student-aid-problem-types.yml
+rate_limit_signaling:
+  headers: [X-RateLimit-Limit, X-RateLimit-Remaining]
+  exhaustion_status: 429
+  exhaustion_code: OVER_RATE_LIMIT
+  retry_after: false
+  retry_after_note: >-
+    Probed 2026-09-09 — api.data.gov returns no Retry-After header. A client that
+    exhausts its hourly bucket has to back off on a fixed schedule rather than being
+    told when to return.
+  see: rate-limits/federal-student-aid-rate-limits.yml
+versioning:
+  in_url: true
+  current: v1
+  policy_published: false
+  see: lifecycle/federal-student-aid-lifecycle.yml
+request_id_tracing:
+  supported: false
+  note: >-
+    No correlation or request-id header is documented or observed on responses.
+    Support is by email to scorecarddata@rti.org with the request URL.
+idempotency:
+  coverage: none
+  applicability: na
+  scope: []
+  mechanism: none
+  note: >-
+    The API is read-only — GET only, no POST/PUT/PATCH/DELETE anywhere in the
+    documented surface — so there is no mutating operation for an idempotency key to
+    protect. This is an honest "not applicable", not an omission by the provider:
+    there is nothing here an agent can double-fire.
+  evidence: https://collegescorecard.ed.gov/data/api-documentation/
+dry_run_mode:
+  supported: false
+  applicability: na
+  note: Read-only surface; every call is already a rehearsal.
+reversibility:
+  applicability: na
+  grade: na
+  write_surfaces: []
+  note: >-
+    No write surface exists on the College Scorecard API, so there is no action for
+    an agent to take back and nothing to grade. Federal Student Aid's own
+    consequential write flows — submitting a FAFSA, changing a repayment plan,
+    consolidating loans — happen in the StudentAid.gov web application, which
+    exposes no public API; their reversal windows are stated in program policy, not
+    in any machine-readable contract.
+  evidence: https://collegescorecard.ed.gov/data/api-documentation/

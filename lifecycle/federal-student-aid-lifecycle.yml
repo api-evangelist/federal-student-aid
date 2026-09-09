@@ -1,0 +1,80 @@
+specification: API Commons Lifecycle
+specificationVersion: '0.1'
+provider: Federal Student Aid
+providerId: federal-student-aid
+generated: '2026-09-09'
+method: searched
+source: https://collegescorecard.ed.gov/data/api-documentation/
+modified: '2026-09-09'
+description: >-
+  Lifecycle posture for the College Scorecard API, the one publicly callable
+  surface on this Federal Student Aid record — how it is versioned, what the
+  Department commits to, and what it does not publish.
+scope:
+  api: College Scorecard API
+  aid: federal-student-aid:college-scorecard
+versioning:
+  scheme: path
+  current: v1
+  path_segment: /ed/collegescorecard/v1/
+  stability: stable
+  history: >-
+    v1 is the only version the API has ever exposed; the api.data.gov path has been
+    unchanged since launch.
+  platform_version: 3.6.1
+  platform_version_source: >-
+    Footer of https://collegescorecard.ed.gov/data/api-documentation/, fetched 2026-09-09.
+  data_versioning: >-
+    Data is versioned by year prefix in the field path (2018.earnings.*) with a
+    "latest" alias. Because metrics publish on different schedules, "latest" is
+    per-metric rather than per-record.
+change_log:
+  published: true
+  url: https://collegescorecard.ed.gov/data/changelog/
+  releases_url: https://github.com/RTICWDT/college-scorecard/releases
+  cadence: irregular, roughly 3-5 dated updates per year
+  see: changelog/federal-student-aid-changelog.yml
+deprecation:
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  deprecated_operations: []
+  note: >-
+    No deprecation policy, no Sunset or Deprecation headers, no advance notice
+    commitment. Data variables have been re-derived and, in at least one case,
+    corrected in place (the SCORECARD_SECTOR truncation fix of 2025-05-21) without a
+    versioned migration path. A consumer learns about a change by reading the change
+    log after the fact.
+status_page:
+  published: false
+  url: null
+  probed:
+    - url: https://status.data.gov/
+      status: 0
+      note: DNS does not resolve.
+  note: >-
+    Neither the Department nor api.data.gov publishes a status page or uptime
+    history for this API. Availability is unobservable to a consumer except by
+    calling it.
+sla:
+  published: false
+  uptime_commitment: null
+  support_response_commitment: null
+  note: >-
+    No SLA. This is a free federal open-data service; support is best-effort by
+    email.
+support:
+  email: scorecarddata@rti.org
+  community: http://opendata.stackexchange.com/questions/tagged/collegescorecard
+  press: press@ed.gov
+  note: >-
+    Support is operated by RTI International, the Department's contractor for the
+    College Scorecard platform.
+maturity: stable
+retirement_risk:
+  level: policy-dependent
+  note: >-
+    Continuity depends on federal appropriations and Departmental policy rather than
+    on a commercial roadmap. The Department publishes no commitment to keep the API
+    running and no notice period if it stops.

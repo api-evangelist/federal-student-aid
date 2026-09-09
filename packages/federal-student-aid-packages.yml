@@ -1,0 +1,92 @@
+specification: API Commons Packages
+specificationVersion: '0.1'
+provider: Federal Student Aid
+providerId: federal-student-aid
+generated: '2026-09-09'
+method: searched
+source: >-
+  registry.npmjs.org, pypi.org, rubygems.org registry metadata endpoints, queried 2026-09-09
+modified: '2026-09-09'
+description: >-
+  Client library census for the surfaces on this record. The headline finding is an
+  absence: neither Federal Student Aid nor the U.S. Department of Education publishes
+  a first-party SDK for any of its APIs on any package registry. Everything below is
+  third-party and unofficial, and every one of them is either stale or a single-author
+  side project. No SDKs pointer is wired into apis.yml, because doing so would credit
+  the provider with client tooling it did not ship.
+official_sdk_count: 0
+package_count: 3
+official: false
+registries_searched:
+  - registry: npm
+    query: '"college scorecard", "collegescorecard", "student aid"'
+    first_party_hits: 0
+  - registry: pypi
+    query: '"college-scorecard", "collegescorecard", "pyscorecard"'
+    first_party_hits: 0
+  - registry: rubygems
+    query: '"college scorecard"'
+    first_party_hits: 0
+    note: zero results of any kind
+  - registry: maven-central
+    query: college scorecard / federal student aid
+    first_party_hits: 0
+  - registry: nuget
+    query: college scorecard
+    first_party_hits: 0
+  - registry: crates.io
+    query: college scorecard
+    first_party_hits: 0
+  - registry: pkg.go.dev
+    query: college scorecard
+    first_party_hits: 0
+packages:
+  - name: college-scorecard
+    registry: pypi
+    language: python
+    official: false
+    url: https://pypi.org/project/college-scorecard/
+    repository: https://github.com/ahoodatheguy/scorecard
+    version: '1.4'
+    published: '2023-04-23'
+    covers: College Scorecard API
+    note: >-
+      Single-author unofficial wrapper. Its own README still sends users to
+      https://collegescorecard.ed.gov/data/documentation/ for a key — a URL that
+      now returns 404, which is the same dead link this record carried before this
+      pass corrected it.
+  - name: PyScorecard
+    registry: pypi
+    language: python
+    official: false
+    url: https://pypi.org/project/PyScorecard/
+    repository: https://github.com/deino475/PyScorecard
+    version: 0.2.1
+    published: '2019-12-06'
+    covers: College Scorecard API
+    note: >-
+      Self-described "unofficial Python library". Last released 2019 — it predates
+      the field-of-study dataset, the __range and __not operators as documented
+      today, and every data release from 3.2.0 onward.
+  - name: '@pipeworx/mcp-college-scorecard'
+    registry: npm
+    language: javascript
+    official: false
+    url: https://www.npmjs.com/package/@pipeworx/mcp-college-scorecard
+    repository: https://github.com/pipeworx-io/mcp-college-scorecard
+    version: 0.1.0
+    published: '2026-06-26'
+    covers: College Scorecard API
+    kind: mcp-server
+    note: >-
+      A third-party MCP server wrapping the College Scorecard API. Recorded here for
+      completeness and deliberately NOT wired as an MCPServer pointer: the Department
+      of Education did not publish it, and an MCPServer pointer asserts that the
+      provider ships an agent surface. See mcp/federal-student-aid-mcp.yml.
+decay_signal:
+  finding: >-
+    The two Python clients were last released in 2023 and 2019. The API they wrap has
+    shipped nine dated changes since July 2024, including a January 2025 fix that
+    changed how suppressed integers serialise (0 became null). A consumer on either
+    library is reading a response shape the provider has since altered.
+  strongest_evidence: pypi release dates

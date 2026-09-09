@@ -1,0 +1,59 @@
+specification: API Commons Sandbox
+specificationVersion: '0.1'
+provider: Federal Student Aid
+providerId: federal-student-aid
+generated: '2026-09-09'
+method: probed
+source: https://api.data.gov/docs/developer-manual/
+modified: '2026-09-09'
+description: >-
+  There is no sandbox, staging environment or test-mode key for any surface on this
+  record — and for a read-only public-data API there is nothing to sandbox. What
+  exists instead is a published shared demonstration key that lets an agent or a
+  developer call production immediately, with no registration, at a reduced rate.
+  It is recorded here because it is the closest thing to a try-before-you-register
+  surface the provider offers, and because it is a real published credential rather
+  than one we invented.
+sandbox_environment: false
+test_mode: false
+separate_base_url: false
+demo_credential:
+  key: DEMO_KEY
+  published_by: api.data.gov
+  source: https://api.data.gov/docs/developer-manual/
+  scope: production data, reduced rate limit
+  hourly_limit: 30
+  hourly_limit_scope: per IP address
+  daily_limit: 50
+  daily_limit_scope: per IP address
+  verified: true
+  verified_at: '2026-09-09'
+  verification: >-
+    GET https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&per_page=1
+    returned HTTP 200 with x-ratelimit-limit: 10 and a real institution record.
+  note: >-
+    DEMO_KEY reads live production data. There is no separate fixture dataset, so it
+    is a rate-limited front door, not a test environment.
+test_fixtures: []
+test_fixtures_note: >-
+  No fixture records, magic identifiers or simulator values are published, and none
+  would be meaningful: every record in this API is a real U.S. institution and every
+  call is a read.
+test_clocks: false
+triggers: false
+why_na: >-
+  Sandboxes exist so that a mutating call can be rehearsed without consequence. This
+  API has no mutating call. See conventions/federal-student-aid-conventions.yml,
+  where idempotency, dry-run and reversibility are all recorded as not applicable
+  for the same reason.
+gated_surfaces:
+  - name: FSA Partner Connect / COD / NSLDS
+    test_environment: true
+    public: false
+    note: >-
+      Federal Student Aid does operate school testing environments for its partner
+      systems — the COD Technical Reference publishes a "Volume 5: School Testing
+      Guide" — but access requires SAIG enrollment and the technical references are
+      PDF-only. No public credential, no public contract, nothing this pipeline can
+      capture.
+    evidence: https://fsapartners.ed.gov/knowledge-center/library/system-technical-references/2024-12-31/2025-2026-cod-technical-reference-may-2025-update

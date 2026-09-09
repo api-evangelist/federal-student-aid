@@ -36,7 +36,7 @@ accessModel:
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/federal-student-aid.png
 access: 3rd-Party
 created: '2024-12-03'
-modified: '2026-04-28'
+modified: '2026-09-09'
 position: Consuming
 tags:
   - Education
@@ -82,17 +82,23 @@ apis:
       via api.data.gov, exposes institution-level data including federal aid
       participation, costs, completion rates, and post-college outcomes that
       complement Federal Student Aid program information.
-    humanURL: https://collegescorecard.ed.gov/data/documentation/
+    humanURL: https://collegescorecard.ed.gov/data/api-documentation/
     baseURL: https://api.data.gov/ed/collegescorecard/v1
     tags:
       - Education
       - Open Data
       - Higher Education
     properties:
+      - type: APIReference
+        url: https://collegescorecard.ed.gov/data/api-documentation/
       - type: Documentation
-        url: https://collegescorecard.ed.gov/data/documentation/
-      - type: Signup
+        url: https://collegescorecard.ed.gov/data/data-documentation/
+      - type: ChangeLog
+        url: https://collegescorecard.ed.gov/data/changelog/
+      - type: SignUp
         url: https://api.data.gov/signup/
+      - type: SourceCode
+        url: https://github.com/RTICWDT/college-scorecard
 common:
   - type: DomainSecurity
     url: security/federal-student-aid-domain-security.yml
@@ -105,7 +111,42 @@ common:
   - type: FAFSA
     url: https://studentaid.gov/h/apply-for-aid/fafsa
   - type: Open Data
-    url: https://www.ed.gov/about/news/data
+    url: https://data.ed.gov/
+  - type: Support
+    url: https://studentaid.gov/help-center
+  - type: PrivacyPolicy
+    url: https://studentaid.gov/help/privacy
+  - type: Authentication
+    url: authentication/federal-student-aid-authentication.yml
+  - type: ChangeLog
+    url: changelog/federal-student-aid-changelog.yml
+  - type: Conformance
+    url: conformance/federal-student-aid-conformance.yml
+  - type: Conventions
+    url: conventions/federal-student-aid-conventions.yml
+  - type: DataModel
+    url: data-model/federal-student-aid-data-model.yml
+  - type: ErrorCatalog
+    url: errors/federal-student-aid-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/federal-student-aid-lifecycle.yml
+  - type: LLMsTxt
+    url: llms/federal-student-aid-llms.txt
+  - type: Packages
+    url: packages/federal-student-aid-packages.yml
+  - type: Plans
+    url: plans/federal-student-aid-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/federal-student-aid-rate-limits.yml
+  - type: Security
+    url: security/federal-student-aid-vulnerability-disclosure.yml
+  - type: VulnerabilityDisclosure
+    url: security/federal-student-aid-vulnerability-disclosure.yml
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
+x-enrichment:
+  date: '2026-09-09'
+  status: enriched
+  artifacts_added: 13
+  pass: local-v3

@@ -1,0 +1,132 @@
+specification: API Commons Conformance
+specificationVersion: '0.1'
+provider: Federal Student Aid
+providerId: federal-student-aid
+generated: '2026-09-09'
+method: probed
+source: https://api.data.gov/ed/collegescorecard/v1/schools
+docs: https://collegescorecard.ed.gov/data/api-documentation/
+modified: '2026-09-09'
+description: >-
+  Standards conformance for the College Scorecard API, the one publicly callable
+  surface on this Federal Student Aid record. Cross-cutting web-API standards are
+  largely absent — there is no OAuth, no RFC 9457, no OpenAPI. What is present, and
+  is the substantive finding here, is domain-standard conformance: the API's
+  identifiers are the federal higher-education identifier schemes, verified by live
+  probe rather than claimed in prose, so anyone who already speaks IPEDS, OPE ID or
+  CIP joins this data with no bespoke crosswalk.
+conformance:
+  - id: oauth2
+    conforms: false
+    evidence: >-
+      No OAuth surface. Authentication is a single api.data.gov API key —
+      https://api.data.gov/docs/developer-manual/
+  - id: oidc
+    conforms: false
+    evidence: >-
+      No /.well-known/openid-configuration on any host; 54 well-known probes on
+      2026-09-09 returned no documents. See well-known/federal-student-aid-well-known.yml
+  - id: rfc9457
+    conforms: false
+    evidence: >-
+      Errors are application/json with a bespoke {"error":{"code","message"}}
+      envelope, not application/problem+json. See errors/federal-student-aid-problem-types.yml
+  - id: openapi
+    conforms: false
+    evidence: >-
+      No OpenAPI, Swagger or other machine-readable contract published. Probed
+      /openapi.json, /swagger.json and /api-docs on studentaid.gov and api.data.gov
+      on 2026-09-09 — all 404 or HTML shells.
+  - id: pagination
+    conforms: true
+    evidence: >-
+      Documented page/per_page parameters with metadata.total, metadata.page and
+      metadata.per_page in every response —
+      https://collegescorecard.ed.gov/data/api-documentation/
+  - id: idempotency
+    conforms: false
+    applicability: na
+    evidence: >-
+      Read-only GET surface; no mutating operation exists to protect. See
+      conventions/federal-student-aid-conventions.yml
+  - id: rate-limit-headers
+    conforms: partial
+    evidence: >-
+      X-RateLimit-Limit and X-RateLimit-Remaining observed live 2026-09-09; the
+      RFC 9239-style RateLimit-Policy and a Retry-After on 429 are both absent.
+  - id: https-only
+    conforms: true
+    evidence: >-
+      api.data.gov rejects plaintext with HTTPS_REQUIRED (HTTP 400) —
+      https://api.data.gov/docs/developer-manual/
+  - id: json-api
+    conforms: false
+    evidence: Bespoke metadata/results envelope, not the JSON:API media type.
+  - id: odata
+    conforms: false
+    evidence: Bespoke __not/__range query grammar, not OData $filter.
+domain_standards:
+  - id: ipeds-unitid
+    name: IPEDS UNITID
+    body: National Center for Education Statistics (NCES), U.S. Department of Education
+    conforms: true
+    role: primary record identifier
+    evidence: >-
+      The API's primary key field `id` is the institution's IPEDS UNITID, and the
+      nested field-of-study objects carry the same value as `unit_id`. Probed
+      2026-09-09: GET /ed/collegescorecard/v1/schools?school.name=Harvard University
+      returned {"id":166027,...} — 166027 is Harvard University's IPEDS UNITID.
+    why_it_matters: >-
+      Any consumer already holding IPEDS data joins to College Scorecard on a shared
+      key with no mapping table.
+  - id: ope-id
+    name: OPE ID (Office of Postsecondary Education Identifier)
+    body: U.S. Department of Education / Federal Student Aid
+    conforms: true
+    role: Title IV program participation identifier
+    evidence: >-
+      Fields `ope6_id` and `ope8_id` returned live on 2026-09-09 for UNITID 166027
+      as "002155" and "00215500" respectively.
+    why_it_matters: >-
+      OPE ID is the identifier Federal Student Aid itself issues to institutions
+      eligible for Title IV aid. It is the join key between this open dataset and
+      FSA's own program data, including the aid volume files published on the FSA
+      Data Center.
+  - id: cip
+    name: CIP (Classification of Instructional Programs)
+    version: 4-digit series
+    body: National Center for Education Statistics (NCES)
+    conforms: true
+    role: field-of-study taxonomy
+    evidence: >-
+      Field-of-study records are keyed on `code` in the CIP 4-digit series, probed
+      live 2026-09-09 (e.g. code "0107", title "International Agriculture.").
+    why_it_matters: >-
+      Program-level outcomes are addressable by the same taxonomy used across federal
+      education statistics and by accreditors.
+domain_standards_absent:
+  - id: ed-fi
+    checked: true
+    found: false
+    note: No Ed-Fi data standard surface; Ed-Fi is a K-12/SIS standard and does not apply to this dataset.
+  - id: lti
+    checked: true
+    found: false
+    note: No learning-tool interoperability surface; this is a statistics API, not a learning platform.
+  - id: oneroster
+    checked: true
+    found: false
+  - id: oai-pmh
+    checked: true
+    found: false
+    note: >-
+      No OAI-PMH verb endpoint on collegescorecard.ed.gov. The Department's separate
+      open-data platform at data.ed.gov runs CKAN and does expose a CKAN action API
+      (probed 2026-09-09, /api/3/action/status_show returned 200), but that is a
+      Department-wide platform, not a Federal Student Aid surface.
+certifications: []
+certifications_note: >-
+  No SOC 2, ISO 27001, PCI or FedRAMP authorization is published for these public
+  surfaces. As federal government systems they are governed by FISMA and the
+  Department's ATO process, which is not published as a certification artifact, so
+  no Compliance pointer is wired.

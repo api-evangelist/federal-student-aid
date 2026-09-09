@@ -1,0 +1,159 @@
+specification: API Commons ErrorCatalog
+specificationVersion: '0.1'
+provider: Federal Student Aid
+providerId: federal-student-aid
+generated: '2026-09-09'
+method: searched
+source: https://collegescorecard.ed.gov/data/api-documentation/
+modified: '2026-09-09'
+description: >-
+  Error catalog for the College Scorecard API. Two producers answer on the same
+  host and share one envelope shape: the api.data.gov gateway rejects key and quota
+  problems before the application is reached and returns string error codes, while
+  the College Scorecard application returns numeric codes for request problems.
+  A client has to handle both.
+format: vendor-json
+rfc9457: false
+rfc9457_note: >-
+  Responses are application/json with a bespoke {"error":{"code":...,"message":...}}
+  envelope. No application/problem+json, no type URIs, no RFC 9457 members.
+envelope:
+  media_type: application/json
+  shape: '{"error": {"code": <string|integer>, "message": <string>}}'
+  code_field: error.code
+  message_field: error.message
+  detail_field: null
+  trace_field: null
+producers:
+  - id: gateway
+    name: api.data.gov
+    code_type: string
+    docs: https://api.data.gov/docs/developer-manual/
+  - id: application
+    name: College Scorecard (Open Data Maker)
+    code_type: integer
+    docs: https://collegescorecard.ed.gov/data/api-documentation/
+problem_types:
+  - id: api-key-missing
+    producer: gateway
+    code: API_KEY_MISSING
+    http_status: 403
+    title: No API key supplied
+    detail: >-
+      "College Scorecard requires an API Key for access. To obtain a key, visit
+      https://api.data.gov/signup."
+    remediation: >-
+      Register at https://api.data.gov/signup/ and send the key as ?api_key=,
+      the X-Api-Key header, or the HTTP Basic username.
+    retryable: false
+    observed: true
+    observed_at: '2026-09-09'
+    observed_evidence: >-
+      GET https://api.data.gov/ed/collegescorecard/v1/schools -> 403 with this body.
+  - id: api-key-invalid
+    producer: gateway
+    code: API_KEY_INVALID
+    http_status: 403
+    title: API key not recognised
+    remediation: Check the key was copied whole from the issuing email.
+    retryable: false
+    observed: false
+  - id: api-key-disabled
+    producer: gateway
+    code: API_KEY_DISABLED
+    http_status: 403
+    title: API key disabled
+    remediation: Contact api.data.gov support; a disabled key is an account action, not a transient fault.
+    retryable: false
+    observed: false
+  - id: api-key-unauthorized
+    producer: gateway
+    code: API_KEY_UNAUTHORIZED
+    http_status: 403
+    title: API key not authorized for this service
+    remediation: The key is valid but not entitled to this API path.
+    retryable: false
+    observed: false
+  - id: api-key-unverified
+    producer: gateway
+    code: API_KEY_UNVERIFIED
+    http_status: 403
+    title: API key email not verified
+    remediation: Complete the email verification that followed signup.
+    retryable: false
+    observed: false
+  - id: over-rate-limit
+    producer: gateway
+    code: OVER_RATE_LIMIT
+    http_status: 429
+    title: Rate limit exceeded
+    detail: >-
+      The hourly bucket for this key (or IP, for DEMO_KEY) is exhausted.
+    remediation: >-
+      Back off and retry in the next hourly window; request a limit increase from
+      scorecarddata@rti.org. No Retry-After header is returned, so the client must
+      choose its own backoff.
+    retryable: true
+    observed: false
+  - id: https-required
+    producer: gateway
+    code: HTTPS_REQUIRED
+    http_status: 400
+    title: Request must use HTTPS
+    remediation: Call the https:// scheme; plaintext HTTP is refused.
+    retryable: false
+    observed: false
+  - id: bad-request
+    producer: application
+    code: 400
+    http_status: 400
+    title: Bad Request
+    detail: '"The request was invalid. Check your parameters."'
+    remediation: >-
+      Most often an unknown field name, a malformed __range, or a value list
+      containing a wildcard or float (both unsupported).
+    retryable: false
+    observed: false
+  - id: unauthorized
+    producer: application
+    code: 401
+    http_status: 401
+    title: Unauthorized
+    detail: '"Your API key is missing or invalid."'
+    retryable: false
+    observed: false
+  - id: forbidden
+    producer: application
+    code: 403
+    http_status: 403
+    title: Forbidden
+    detail: '"You do not have access to the requested resource."'
+    retryable: false
+    observed: false
+  - id: not-found
+    producer: application
+    code: 404
+    http_status: 404
+    title: Not Found
+    detail: '"The requested resource could not be found."'
+    retryable: false
+    observed: false
+  - id: server-error
+    producer: application
+    code: 500
+    http_status: 500
+    title: Internal Server Error
+    detail: '"An error occurred on the server side."'
+    remediation: Retry with backoff; report persistent failures to scorecarddata@rti.org.
+    retryable: true
+    observed: false
+problem_type_count: 12
+gaps:
+  - >-
+    No error is returned for a query that is syntactically valid but semantically
+    empty — a filter on a field that carries no data for the requested cohort year
+    returns an empty results array rather than a warning, so a silently wrong year
+    prefix looks identical to a genuinely empty result set.
+  - >-
+    No machine-readable error registry is published; this catalog is transcribed
+    from two prose documentation pages.

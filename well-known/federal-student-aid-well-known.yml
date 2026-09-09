@@ -1,0 +1,213 @@
+specification: API Commons WellKnown
+specificationVersion: '0.1'
+provider: Federal Student Aid
+providerId: federal-student-aid
+generated: '2026-09-09'
+method: probed
+source: direct HTTPS probe of each host
+modified: '2026-09-09'
+description: 'Well-known discovery probe across every host this record knows: the StudentAid.gov consumer
+  platform and its www alias, the api.data.gov gateway that serves the College Scorecard API, the College
+  Scorecard docs host, the FSA Partner Connect host, and the parent department at www.ed.gov. Nine named
+  paths were probed on each of six hosts, 54 probes in total. Nothing was found: no security.txt, no api-catalog,
+  no OAuth or OpenID metadata, no agent card. This file records a measured absence, and no WellKnown or
+  SecurityTxt pointer is wired into apis.yml as a result.'
+result: no-documents-found
+probe_count: 54
+hit_count: 0
+false_positive_note: StudentAid.gov answers HTTP 200 with its Angular shell for every /.well-known/* path
+  it does not 404. The shell is the same 10,905-byte body returned for a deliberately bogus URL, so those
+  200s are catch-all responses, not served documents. www.ed.gov returns 403 to an automated client on
+  /.well-known/security.txt, which is an edge policy rather than evidence either way; the Department does
+  publish a vulnerability disclosure policy as an HTML page instead (see security/federal-student-aid-vulnerability-disclosure.yml).
+hosts:
+- host: studentaid.gov
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 200
+    file: null
+    note: HTTP 200 but the body is the StudentAid.gov single-page-app HTML shell, byte-identical to the
+      shell returned for a URL that does not exist. Not a document; recorded as a miss.
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: null
+    note: HTTP 200 but the body is the StudentAid.gov single-page-app HTML shell, byte-identical to the
+      shell returned for a URL that does not exist. Not a document; recorded as a miss.
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    file: null
+    note: HTTP 200 but the body is the StudentAid.gov single-page-app HTML shell, byte-identical to the
+      shell returned for a URL that does not exist. Not a document; recorded as a miss.
+  - path: /.well-known/api-catalog
+    status: 200
+    file: null
+    note: HTTP 200 but the body is the StudentAid.gov single-page-app HTML shell, byte-identical to the
+      shell returned for a URL that does not exist. Not a document; recorded as a miss.
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+  - path: /.well-known/agent.json
+    status: 404
+    file: null
+  - path: /.well-known/aauth-resource.json
+    status: 404
+    file: null
+- host: www.studentaid.gov
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 200
+    file: null
+    note: HTTP 200 but the body is the StudentAid.gov single-page-app HTML shell, byte-identical to the
+      shell returned for a URL that does not exist. Not a document; recorded as a miss.
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: null
+    note: HTTP 200 but the body is the StudentAid.gov single-page-app HTML shell, byte-identical to the
+      shell returned for a URL that does not exist. Not a document; recorded as a miss.
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    file: null
+    note: HTTP 200 but the body is the StudentAid.gov single-page-app HTML shell, byte-identical to the
+      shell returned for a URL that does not exist. Not a document; recorded as a miss.
+  - path: /.well-known/api-catalog
+    status: 200
+    file: null
+    note: HTTP 200 but the body is the StudentAid.gov single-page-app HTML shell, byte-identical to the
+      shell returned for a URL that does not exist. Not a document; recorded as a miss.
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+  - path: /.well-known/agent.json
+    status: 404
+    file: null
+  - path: /.well-known/aauth-resource.json
+    status: 404
+    file: null
+- host: api.data.gov
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+  - path: /.well-known/agent.json
+    status: 404
+    file: null
+  - path: /.well-known/aauth-resource.json
+    status: 404
+    file: null
+- host: collegescorecard.ed.gov
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+  - path: /.well-known/agent.json
+    status: 404
+    file: null
+  - path: /.well-known/aauth-resource.json
+    status: 404
+    file: null
+- host: fsapartners.ed.gov
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+  - path: /.well-known/agent.json
+    status: 404
+    file: null
+  - path: /.well-known/aauth-resource.json
+    status: 404
+    file: null
+- host: www.ed.gov
+  documents:
+  - path: /.well-known/security.txt
+    status: 403
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+  - path: /.well-known/agent.json
+    status: 404
+    file: null
+  - path: /.well-known/aauth-resource.json
+    status: 404
+    file: null

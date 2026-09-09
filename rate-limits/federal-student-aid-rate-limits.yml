@@ -4,95 +4,90 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Federal Student Aid
 providerId: federal-student-aid
 created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-04'
+generated: '2026-09-09'
+method: searched
+source: https://collegescorecard.ed.gov/data/api-documentation/
+docs:
+  - https://collegescorecard.ed.gov/data/api-documentation/
+  - https://api.data.gov/docs/developer-manual/
+modified: '2026-09-09'
 tags:
   - Education
   - Federal Government
   - Financial Aid
-  - Grants
-  - Loans
-  - Student Aid
+  - Higher Education
   - Rate Limiting
   - Quotas
   - Throttling
-description: Machine-readable rate limit definitions for the Federal Student Aid API surface. Captures
-  per-tier quotas, burst behavior, response signaling, and recovery semantics. Defaults are scaffold values
-  to be replaced with published provider limits.
+description: >-
+  Published rate limits for the College Scorecard API, the one publicly callable
+  surface on this Federal Student Aid record. Replaces the 2026-05-04 scaffold,
+  whose values were generated defaults and did not match anything the Department
+  publishes. Limits below are transcribed from the Department's API Documentation
+  page and the api.data.gov developer manual, and the response headers were
+  observed live on 2026-09-09.
 headers:
   limit: X-RateLimit-Limit
   remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
-  retryAfter: Retry-After
-  policy: RateLimit-Policy
+  reset: null
+  retryAfter: null
+  policy: null
+headers_note: >-
+  Observed live 2026-09-09 on GET
+  https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&per_page=1
+  -> HTTP 200 with "x-ratelimit-limit: 10" and "x-ratelimit-remaining: 9".
+  No reset, Retry-After or RateLimit-Policy header is emitted, so a throttled agent
+  is told that it is over the limit but never when it may return. That missing
+  signal is the notable gap on this surface.
 responseCodes:
   throttled: 429
   quotaExceeded: 429
+  keyRejected: 403
   serviceUnavailable: 503
+error_codes:
+  throttled: OVER_RATE_LIMIT
+  keyRejected: API_KEY_MISSING | API_KEY_INVALID | API_KEY_DISABLED
 limits:
-  - tier: free
-    name: Free Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 10
-    burst: 20
-    timeFrame: minute
-    applies:
-      - StudentAid.gov
-      - College Scorecard API
-  - tier: free
-    name: Free Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
+  - tier: registered
+    name: Default registered API key
+    scope: per-ip
+    metric: requests_per_hour
     limit: 1000
-    timeFrame: month
-    applies:
-      - StudentAid.gov
-      - College Scorecard API
-  - tier: professional
-    name: Professional Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 100
-    burst: 200
-    timeFrame: minute
-    applies:
-      - StudentAid.gov
-      - College Scorecard API
-  - tier: professional
-    name: Professional Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 100000
-    timeFrame: month
-    applies:
-      - StudentAid.gov
-      - College Scorecard API
-  - tier: enterprise
-    name: Enterprise Negotiated Limit
-    scope: contract
-    metric: requests_per_minute
-    limit: 1000
-    burst: 5000
-    timeFrame: minute
-    applies:
-      - StudentAid.gov
-      - College Scorecard API
-policies:
-  - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter, honoring the Retry-After header
-      when present.
-  - name: Burst Handling
-    description: Short bursts above the steady-state limit are tolerated up to the documented burst ceiling
-      before throttling engages.
-  - name: Quota Reset
-    description: Monthly quotas reset at the start of each calendar month in UTC. Per-minute and per-second
-      windows reset on a sliding-window basis.
-  - name: Fair Use
-    description: Even on uncapped enterprise tiers, sustained usage that materially impacts shared infrastructure
-      may be subject to fair-use throttling.
-maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+    burst: null
+    window: 1h
+    cost: free
+    source: https://collegescorecard.ed.gov/data/api-documentation/
+    quote: >-
+      "The default rate limit is 1,000 requests per IP address per hour."
+    increase_process: >-
+      Email scorecarddata@rti.org to request an increase. No self-service upgrade,
+      no paid tier.
+  - tier: demo
+    name: Shared DEMO_KEY
+    scope: per-ip
+    metric: requests_per_hour
+    limit: 30
+    burst: null
+    window: 1h
+    cost: free
+    source: https://api.data.gov/docs/developer-manual/
+    quote: '"Hourly Limit: 30 requests per IP address per hour"'
+  - tier: demo
+    name: Shared DEMO_KEY (daily)
+    scope: per-ip
+    metric: requests_per_day
+    limit: 50
+    burst: null
+    window: 24h
+    cost: free
+    source: https://api.data.gov/docs/developer-manual/
+    quote: '"Daily Limit: 50 requests per IP address per day"'
+limit_count: 3
+notes:
+  - >-
+    The limit is bound to the IP address, not the key. Registered and demo traffic
+    from one NAT egress or one cloud region share a bucket, which matters for any
+    agent fleet calling from a small pool of addresses.
+  - >-
+    Federal Student Aid's own partner systems (FSA Partner Connect, SAIG, COD,
+    NSLDS) publish no rate limits because they publish no public API.
