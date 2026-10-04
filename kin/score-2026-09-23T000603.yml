@@ -1,33 +1,31 @@
-# Kin Score artifact — federal-student-aid — 2026-08-30T203505
+# Kin Score artifact — federal-student-aid — 2026-09-23T000603
 # The API Evangelist rating (https://github.com/api-evangelist/kin-score). Generated; do not edit.
 ---
 kin_score:
   slug: federal-student-aid
-  schema_version: 0.17.2
-  scored_at: '2026-08-30'
-  run_ts: 2026-08-30T203505
-  composite: 10.3
-  band: minimal
+  schema_version: 0.22.0
+  scored_at: '2026-09-23'
+  run_ts: 2026-09-23T000603
+  composite: 31.3
+  band: thin
   facets:
-    discoverability: 59.3
+    discoverability: 66.7
     contract_quality: 0.0
-    governance: 0.0
-    operational_transparency: 7.9
-    developer_ergonomics: 0.0
-    commercial_clarity: 28.9
-    contract_governance: 0.0
-    access_clarity: 28.9
+    contract_governance: 18.2
+    operational_transparency: 63.2
+    developer_ergonomics: 31.0
+    access_clarity: 26.3
   agent_readiness:
-    score: 2.5
-    band: human-only
+    score: 7.9
+    band: agent-aware
     dimensions:
       spec_presence: false
       agentic_access: false
       reversibility_documented: false
       mcp_server: false
-      auth_clarity: false
+      auth_clarity: bearer
       idempotency: false
-      error_semantics: false
+      error_semantics: documented
       openapi_examples: false
       rate_limit_signal: documented
       event_surface_described: false
@@ -44,5 +42,8 @@ kin_score:
     applies: true
     regime: Education & Research
     regime_id: education
-    score: 11.1
+    score: 46.3
     matched_via: tags
+  provenance:
+    mcp: derived
+    conformance: first-party

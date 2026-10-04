@@ -12,14 +12,18 @@ description: >-
 type: Index
 deliveryModel:
   model: saas
-  open_source: false
+  license_evidence:
+    not_product:
+    - rticwdt/college-scorecard
+  open_source: unknown
   commercial: true
   callable_host: false
   label: Hosted service · you call their endpoint
-  confidence: medium
+  confidence: low
   source:
   - pricing
-  generated: '2026-08-28'
+  - repository-not-product
+  generated: '2026-09-25'
   method: derived
 accessModel:
   pricing: freemium
@@ -40,7 +44,7 @@ modified: '2026-09-09'
 position: Consuming
 tags:
   - Education
-  - Federal-Government
+  - Federal Government
   - Financial Aid
   - Grants
   - Loans
@@ -52,6 +56,7 @@ tags_raw:
   - Grants
   - Loans
   - Student Aid
+  - Federal-Government
 url: >-
   https://raw.githubusercontent.com/api-evangelist/federal-student-aid/refs/heads/main/apis.yml
 specificationVersion: '0.23'
