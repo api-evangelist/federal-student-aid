@@ -105,6 +105,8 @@ apis:
       - type: SourceCode
         url: https://github.com/RTICWDT/college-scorecard
 common:
+  - type: FinOps
+    url: finops/federal-student-aid-finops.yml
   - type: DomainSecurity
     url: security/federal-student-aid-domain-security.yml
   - type: LinkedIn
