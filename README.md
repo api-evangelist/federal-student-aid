@@ -1,4 +1,4 @@
-# Federal Student Aid (federal-student-aid)
+# Federal Student Aid
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,45 +66,104 @@
 
 The Federal Student Aid (FSA) office of the U.S. Department of Education provides grants, loans, and work-study funds to eligible students enrolled in college or career school. FSA operates StudentAid.gov as the consumer portal for managing federal student loans, completing the FAFSA, and exploring repayment options. FSA does not currently publish a public, open developer API program; aggregate higher education and aid data is redistributed through the Department of Education's open data programs such as the College Scorecard API.
 
-**URL:** [Visit APIs.json URL](https://raw.githubusercontent.com/api-evangelist/federal-student-aid/refs/heads/main/apis.yml)
+**Areas:** Education · Federal Government · Financial Aid · Grants · Loans · Student Aid
 
-## Scope
+## Federal Student Aid on APIs.io
 
-- **Type:** Index
-- **Position:** Consumer
-- **Access:** 3rd-Party
+Everything profiled for Federal Student Aid is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/federal-student-aid/](https://apis.io/providers/federal-student-aid/)** — or go straight to one of the APIs or properties below.
 
-## Tags
+### APIs (2)
 
-- Education, Federal Government, Financial Aid, Grants, Loans, Student Aid
+- [StudentAid.gov](https://apis.io/apis/federal-student-aid/studentaid-gov/) — StudentAid.gov is the official consumer platform for U.S. federal student aid. Borrowers and students use the site to complete the FAFSA, manage federal…
+- [College Scorecard API](https://apis.io/apis/federal-student-aid/college-scorecard/) — The College Scorecard API, operated by the U.S. Department of Education via api.data.gov, exposes institution-level data including federal aid…
 
-## Timestamps
+### Published properties
 
-- **Created:** 2024-12-03
-- **Modified:** 2026-04-28
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## APIs
+#### Security (3)
 
-### StudentAid.gov
-The official consumer platform for U.S. federal student aid: FAFSA, loan management, and repayment tooling. Not exposed as a public REST API.
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Federal Student Aid Authentication](https://apis.io/security/federal-student-aid/federal-student-aid-authentication/)
+- [Federal Student Aid Domain Security](https://apis.io/security/federal-student-aid/federal-student-aid-domain-security/)
+- [Federal Student Aid Vulnerability Disclosure](https://apis.io/security/federal-student-aid/federal-student-aid-vulnerability-disclosure/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Federal Student Aid Plans Pricing](https://apis.io/plans/federal-student-aid/federal-student-aid-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Federal Student Aid Rate Limits](https://apis.io/rate-limits/federal-student-aid/federal-student-aid-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Federal Student Aid Finops](https://apis.io/finops/federal-student-aid/federal-student-aid-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
 - [Website](https://studentaid.gov)
-- [FAFSA](https://studentaid.gov/h/apply-for-aid/fafsa)
-- [Loan Repayment](https://studentaid.gov/manage-loans/repayment)
+- [Support](https://studentaid.gov/help-center)
+- [Privacy policy](https://studentaid.gov/help/privacy)
 
-### College Scorecard API
-Department of Education API exposing institution-level data including federal aid participation, costs, completion rates, and outcomes.
-- [Documentation](https://collegescorecard.ed.gov/data/documentation/)
-- Base URL: `https://api.data.gov/ed/collegescorecard/v1`
-- [Sign Up](https://api.data.gov/signup/)
+## API Evangelist rating
 
-## Common Properties
+**Kin Score 27.6** — thin · rubric 0.24.0 · scored 2026-10-17
 
-- [Website](https://studentaid.gov)
-- [About](https://studentaid.gov/about)
-- [FAFSA](https://studentaid.gov/h/apply-for-aid/fafsa)
-- [Department of Education Open Data](https://www.ed.gov/about/news/data)
+| Facet | Score |
+|---|---|
+| Discoverability | 64.3 |
+| Contract quality | 0.0 |
+| Contract governance | 18.2 |
+| Operational transparency | 63.2 |
+| Developer ergonomics | 31.0 |
+| Access clarity | 18.4 |
 
-## Maintainers
+**Agent readiness 7.9** — agent-aware
 
-- **FN:** Kin Lane
-- **Email:** kin@apievangelist.com
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 24.5** — Education & Research
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/federal-student-aid/](https://apis.io/providers/federal-student-aid/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Federal Student Aid: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/federal-student-aid/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
